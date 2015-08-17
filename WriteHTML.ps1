@@ -13,7 +13,7 @@
 [CmdletBinding(SupportsShouldProcess=$True)]
 param( [Parameter(Mandatory=$false,
 ValueFromPipeline=$true)]
-[string]$FilePath = "C:\users\$env:USERNAME\desktop\Write-HTML.html",
+[string]$FilePath = "\\nas\it\james\outfile\Write-HTML.html",
 [string[]]$Computername = $env:COMPUTERNAME,
 $Css='<style>table{margin:auto; width:98%}
      Body{background-color:Orange; Text-align:Center;}
