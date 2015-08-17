@@ -1,9 +1,6 @@
 ﻿function Write-HTML{
 <#
-.CREATED BY:
-    Matthew A. Kerfoot
-.CREATED ON:
-    11\3\2013
+
 .SYNOPSIS
     Creates an HTML file on the Desktop of the local machine full of detailed system information.
 .DESCRIPTION
