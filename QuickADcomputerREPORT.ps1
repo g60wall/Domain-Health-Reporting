@@ -1,4 +1,5 @@
 ﻿##Created by: James A. Wall
+﻿## powershell.org  In particular Curtis Smith
 ## $$$$$$$$$$$$$$$$$$$$$$$$$$
 
 $Header = @"
