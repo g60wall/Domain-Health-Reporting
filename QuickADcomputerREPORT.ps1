@@ -14,6 +14,12 @@ TR:Hover TD {Background-Color: #C1D5F8;}
 DOMAIN INVENTORY
 </title>
 "@
+
+##Set location of Report
+##$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+$location = c:\DomainDump.html
+
 Import-Module ActiveDirectory
 $computerlist = Get-ADComputer -filter * -Property *
 $results =@()
@@ -24,4 +30,4 @@ ForEach ($computer in $computerlist) {
 		$results += $computer | Select-Object name, dnshostname, operatingsystem, operatingsystemservicepack, ipv4address, lastlogondate, logoncount, @{ label = "PingResults"; Expression = { tnc $_.ipv4address -InformationLevel Quiet }},@{ label = "Mac Address"; Expression={(Get-WmiObject win32_networkadapter -ComputerName $_.name).macaddress -ne $null}}  
 	}
 }
-$results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File \\nas\it\james\OUTFILE\DomainInventory.html
+$results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File $localtion
