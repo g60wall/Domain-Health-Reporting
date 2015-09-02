@@ -1,0 +1,1 @@
+﻿get-adcomputer -filter * -Property * | select name,dnshostname,operatingsystem,operatingsystemservicepack,ipv4address,lastlogondate,logoncount |sort lastlogondate -Descending |  ConvertTo-Html -head $Header -PreContent Domain-Inventory -Title 'Braenstone.local' |Out-File C:\DomainInventory.html
