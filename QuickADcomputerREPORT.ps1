@@ -1,7 +1,7 @@
 ﻿##Created by: James A. Wall
 ﻿## powershell.org  In particular Curtis Smith
 ## $$$$$$$$$$$$$$$$$$$$$$$$$$
-
+##Table Formating
 $Header = @"
 <style>
 TABLE {border-width: 1px;border-style: solid;border-color: black;border-collapse: collapse;}
@@ -14,14 +14,20 @@ TR:Hover TD {Background-Color: #C1D5F8;}
 DOMAIN INVENTORY
 </title>
 "@
+## standard Properties
+
+
+$reportname = (get-date).DayOfWeek
 Import-Module ActiveDirectory
-$computerlist = Get-ADComputer -filter * -Property *
 $results =@()
+$computerlist = Get-ADComputer -filter * -Property *
+
+
 ForEach ($computer in $computerlist) {
 	if ($computer.ipv4address -eq $null) {
-		$results += $computer | Select-Object name, dnshostname, operatingsystem, operatingsystemservicepack, ipv4address, lastlogondate, logoncount, @{ label = "PingResults"; Expression = { "Not Alive" } }
+		$results += $computer | Select-Object name, dnshostname, operatingsystem,ipv4address, lastlogondate, logoncount, @{ label = "PingResults"; Expression = { "Not Alive" } }
 	} else {
-		$results += $computer | Select-Object name, dnshostname, operatingsystem, operatingsystemservicepack, ipv4address, lastlogondate, logoncount, @{ label = "PingResults"; Expression = { tnc $_.ipv4address -InformationLevel Quiet }},@{ label = "Mac Address"; Expression={(Get-WmiObject win32_networkadapter -ComputerName $_.name).macaddress -ne $null}}  
+		$results += $computer | Select-Object name, dnshostname, operatingsystem,ipv4address, lastlogondate, logoncount, @{ label = "PingResults"; Expression = { tnc $_.ipv4address -InformationLevel Quiet }},@{ label = "Mac Address"; Expression={(Get-WmiObject win32_networkadapter -ComputerName $_.name).macaddress -ne $null}},@{ label = "HDD About to Fail"; Expression={Get-WmiObject -ComputerName $_.name -namespace root\wmi –class MSStorageDriver_FailurePredictStatus -ErrorAction Silentlycontinue |  Select  PredictFailure}}  
 	}
 }
-$results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File \\nas\it\james\OUTFILE\DomainInventory.html
+$results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File \\nas\it\james\OUTFILE\QUICKad$reportname.html
