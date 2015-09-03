@@ -1,5 +1,5 @@
 ﻿##Created by: James A. Wall
-﻿## powershell.org  In particular Curtis Smith
+## powershell.org  In particular Curtis Smith
 ## $$$$$$$$$$$$$$$$$$$$$$$$$$
 ##Table Formating
 $Header = @"
@@ -30,4 +30,4 @@ ForEach ($computer in $computerlist) {
 		$results += $computer | Select-Object name, dnshostname, operatingsystem,ipv4address, lastlogondate, logoncount, @{ label = "PingResults"; Expression = { tnc $_.ipv4address -InformationLevel Quiet }},@{ label = "Mac Address"; Expression={(Get-WmiObject win32_networkadapter -ComputerName $_.name).macaddress -ne $null}},@{ label = "HDD About to Fail"; Expression={Get-WmiObject -ComputerName $_.name -namespace root\wmi –class MSStorageDriver_FailurePredictStatus -ErrorAction Silentlycontinue |  Select  PredictFailure}}  
 	}
 }
-$results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File \\nas\it\james\OUTFILE\QUICKad$reportname.html
+$results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File c:\QUICKad$reportname.html
