@@ -14,33 +14,61 @@ TR:Hover TD {Background-Color: #C1D5F8;}
 DOMAIN INVENTORY
 </title>
 "@
-<<<<<<< HEAD
-## standard Properties
-
-
+$Properties = @(
+    'name'
+    'dnshostname'
+    'operatingsystem'
+    'ipv4address'
+    'lastlogondate'
+    'logoncount'
+    @{
+        label = 'PingResults' 
+        Expression = { 
+            tnc $_.IPv4Address -InformationLevel Quiet }
+    }
+    @{
+        label = 'Mac Address'
+        Expression={
+            (Get-WmiObject Win32_NetworkAdapter -ComputerName $_.name).MacAddress -ne $null
+        }
+    }
+    @{
+        label = 'HDD About to Fail'
+        Expression={
+            Get-WmiObject -ComputerName $_.name -namespace root\wmi –class MSStorageDriver_FailurePredictStatus -ErrorAction Silentlycontinue | 
+                Select-Object -Property PredictFailure
+        }
+    }
+)
+$Properties1 = @(
+    'name'
+    'dnshostname'
+    'operatingsystem'
+    'ipv4address'
+    'lastlogondate'
+    'logoncount'
+    @{
+        label = 'PingResults' 
+        Expression = { 
+            "Not Alive" }
+    }
+)
 $reportname = (get-date).DayOfWeek
-=======
-
-##Set location of Report
-##$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-$location = c:\DomainDump.html
-
->>>>>>> origin/master
-Import-Module ActiveDirectory
 $results =@()
 $computerlist = Get-ADComputer -filter * -Property *
 
+Import-Module ActiveDirectory
+
+
+
 
 ForEach ($computer in $computerlist) {
-	if ($computer.ipv4address -eq $null) {
-		$results += $computer | Select-Object name, dnshostname, operatingsystem,ipv4address, lastlogondate, logoncount, @{ label = "PingResults"; Expression = { "Not Alive" } }
-	} else {
-		$results += $computer | Select-Object name, dnshostname, operatingsystem,ipv4address, lastlogondate, logoncount, @{ label = "PingResults"; Expression = { tnc $_.ipv4address -InformationLevel Quiet }},@{ label = "Mac Address"; Expression={(Get-WmiObject win32_networkadapter -ComputerName $_.name).macaddress -ne $null}},@{ label = "HDD About to Fail"; Expression={Get-WmiObject -ComputerName $_.name -namespace root\wmi –class MSStorageDriver_FailurePredictStatus -ErrorAction Silentlycontinue |  Select  PredictFailure}}  
+	if ($computer.ipv4address -eq $null) 
+         {
+		  $results += $computer | Select-Object -Property $Properties1
+	     } 
+    else {
+          $results += $computer | Select-Object -Property $Properties
 	}
 }
-<<<<<<< HEAD
 $results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File c:\QUICKad$reportname.html
-=======
-$results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File $localtion
->>>>>>> origin/master
