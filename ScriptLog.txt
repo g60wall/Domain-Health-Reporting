@@ -1,0 +1,7 @@
+
+[DEBUG]   - 03.Sep.2015 12:56:09 - ----- Start -----
+[INFO]    - 03.Sep.2015 12:56:09 - Logging started: C:\Users\administrator\Documents\Domain-Health-Reporting\ScriptLog.txt
+[INFO]    - 03.Sep.2015 12:56:12 - Checking prerequisites to run script on the BSB81A...
+[DEBUG]   - 03.Sep.2015 12:56:12 - BSB81A: Operating system is supported as script runtime environment.
+[ERROR]   - 03.Sep.2015 12:56:14 - BSB81A: Hyper-V PowerShell Module is not found. Please enable manually and run this script again. You can use "Turn Windows features on or off" to enable "Hyper-V Module for Windows PowerShell".
+[ERROR]   - 03.Sep.2015 12:56:14 - Script terminated!
