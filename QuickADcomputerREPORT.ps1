@@ -39,6 +39,12 @@ $Properties = @(
                 Select-Object -Property PredictFailure
         }
     }
+     @{
+        label = 'Display Adapter'
+        Expression={
+           (Get-WmiObject Win32_DisplayControllerConfiguration -ComputerName $_.name).name
+
+        }}
 )
 $Properties1 = @(
     'name'
@@ -72,3 +78,5 @@ ForEach ($computer in $computerlist) {
 	}
 }
 $results | sort lastlogondate -Descending | ConvertTo-Html -head $header -Title "Domain Inventory" | Out-File c:\QUICKad$reportname.html
+
+c:\QUICKad$reportname.html
