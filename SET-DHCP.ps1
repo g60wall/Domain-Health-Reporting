@@ -1,3 +1,4 @@
+﻿## This will ELEVATE to Admin Powershell Shell and allow calling from shortcut  ## This will set host to DHCP
 ﻿# Get the ID and security principal of the current user account
 $myWindowsID=[System.Security.Principal.WindowsIdentity]::GetCurrent()
 $myWindowsPrincipal=new-object System.Security.Principal.WindowsPrincipal($myWindowsID)
