@@ -52,7 +52,8 @@
             $memory   = Get-WmiObject -ComputerName $computerName  win32_physicalmemory
             $WQLFilter="NOT SID = 'S-1-5-18' AND NOT SID = 'S-1-5-19' AND NOT SID = 'S-1-5-20'" 
             $Win32User = Get-WmiObject -Class Win32_UserProfile -Filter $WQLFilter -ComputerName $computername 
-            $lastuser = $Win32User | Sort-Object -Property LastUseTime -Descending | Select-Object -First 1 
+            $lastusetime = $Win32User | Sort-Object -Property LastUseTime -Descending | Select-Object -First 1 
+            $cpusys = Get-WmiObject win32_computersystem -ComputerName $computername
                             
 
                         $system =  [PSCustomObject]@{
@@ -62,16 +63,18 @@
                         DefaultGateway = $network.defaultIPgateway |  select -First 1
                         OUlocation = $hostinfo.CanonicalName
                         OperatingSystem = $os.Caption
-                        LastLogonTime =  ([WMI]'').ConvertToDateTime($LastUser.LastUseTime) 
+                        LastLogonTime =  ([WMI]'').ConvertToDateTime($LastUsetime.LastUseTime) 
                         OSarch = $os.OSArchitecture 
                         LastReformat = $hostinfo.whenCreated 
                         CPU = $cpu.name | select -First 1
-                        CPUamount = ($cpu | Measure-Object).Count
+                        CPUcount = ($cpu | Measure-Object).Count
                         HDsize = (($disk.size | Measure-Object -Sum).Sum)/1GB
                         HDfreeSpace =  (($disk.freespace | Measure-Object -Sum).Sum)/1GB
                         RAMtotal = (($memory.capacity  | Measure-Object -sum).sum)/1gb 
                         RAMspeed = if((($memory.speed | Measure-Object -Average).Average) -eq $null) `
                                     {"VHD"} else {($memory.speed | Measure-Object -Average).Average}
+                        Manufactuer = $cpusys.Manufacturer
+                        Model = $cpusys.model
                         }
                         $system}
                     
