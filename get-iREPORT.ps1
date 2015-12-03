@@ -28,7 +28,7 @@
   Get-iReport -computername SQL
   This will display a report of computer named SQL properties
   .PARAMETER computerName
-  This is where you define name of machine, if left black the local host will be queried
+  This is where you define name of machine, if left blank the local host will be queried
   #>
   [CmdletBinding()]   # Elevating to ADVANCED FUNCTION
   param (  # Define Parameter
