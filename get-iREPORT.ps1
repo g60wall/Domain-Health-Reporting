@@ -41,11 +41,11 @@
 
   begin   { }
 
-  process { ## Code the is excuted
+  process { ## Code that is executed
 
 
-            $hostinfo = Get-ADComputer -Identity "$computerName" -Properties *
-            $network  = Get-WmiObject -ComputerName $computerName Win32_NetworkAdapterConfiguration
+            $hostinfo = Get-ADComputer -Identity "$computerName" -Properties * -EA SilentlyContinue
+            $network  = Get-WmiObject -ComputerName $computerName Win32_NetworkAdapterConfiguration -EA SilentlyContinue
             $cpu      = Get-WmiObject -ComputerName $computerName  win32_processor
             $os       = Get-WmiObject -ComputerName $computerName  win32_operatingsystem
             $disk     = Get-WmiObject -ComputerName $computerName  win32_logicaldisk
@@ -58,7 +58,7 @@
 
                         $system =  [PSCustomObject]@{
                         hostname = $os.PSComputerName
-                        IPv4Address = $hostinfo.IPv4Address
+                        IPv4Address = $hostinfo.IPv4Address 
                         IPv6Address = $hostinfo.IPv6Address
                         DefaultGateway = $network.defaultIPgateway |  select -First 1
                         OUlocation = $hostinfo.CanonicalName
@@ -68,6 +68,7 @@
                         LastReformat = $hostinfo.whenCreated 
                         CPU = $cpu.name | select -First 1
                         CPUcount = ($cpu | Measure-Object).Count
+                        CPUcores = (($cpu).numberofcores | Measure-Object -Sum).sum  
                         HDsize = (($disk.size | Measure-Object -Sum).Sum)/1GB
                         HDfreeSpace =  (($disk.freespace | Measure-Object -Sum).Sum)/1GB
                         RAMtotal = (($memory.capacity  | Measure-Object -sum).sum)/1gb 
