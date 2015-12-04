@@ -1,4 +1,5 @@
-﻿Function Get-ComputerAssetInformation
+﻿
+    Function Get-ComputerAssetInformation
 {
     <#
     .SYNOPSIS
@@ -53,17 +54,14 @@
        Description
        -----------
        Query and display basic information ablout computer test1
-
     .EXAMPLE
        PS > $cred = Get-Credential
        PS > $b = Get-ComputerAssetInformation -ComputerName Test1 -Credential $cred -IncludeMemoryInfo 
        PS > $b | Select MemorySlotsTotal,MemorySlotsUsed | fl
-
        MemorySlotsTotal : 18
        MemorySlotsUsed  : 6
        
        PS > $b._Memory | Select DeviceLocator,@{n='MemorySize'; e={$_.Capacity/1Gb}}
-
        DeviceLocator                                                                   MemorySize
        -------------                                                                   ----------
        PROC 1 DIMM 3A                                                                           2
@@ -80,7 +78,6 @@
     .EXAMPLE
         PS > $a = Get-ComputerAssetInformation -IncludeDiskInfo -IncludeMemoryInfo -IncludeNetworkInfo
         PS > $a._MemorySlots | ft
-
         Label      Bank        Detail           FormFactor      Capacity
         -----      ----        ------           ----------      --------
         BANK 0     Bank 1      Synchronous      SODIMM              4096
@@ -92,7 +89,6 @@
        detail in tabular form.
     .EXAMPLE
         PS > (Get-ComputerAssetInformation -IncludeDiskInfo)._Disks
-
         Drive            : C:
         DiskType         : Partition
         Description      : Installable File System
@@ -105,11 +101,9 @@
         DiskSize         : 59.6 GB
         Model            : SAMSUNG SSD PM800 TH 64G
         Partition        : Disk #0, Partition #0
-
         Description
         -----------
         Query information about computer, include disk information, and immediately display it.
-
     .NOTES
        Originally posted at: http://learn-powershell.net/2013/05/08/scripting-games-2013-event-2-favorite-and-not-so-favorite/
        Author: Zachary Loeber
@@ -785,3 +779,5 @@
         $rp.Dispose()
     }
 }
+
+
