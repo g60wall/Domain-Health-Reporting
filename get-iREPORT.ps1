@@ -72,6 +72,7 @@
             $os       = Get-WmiObject -ComputerName $computerName  win32_operatingsystem
             $disk     = Get-WmiObject -ComputerName $computerName  win32_logicaldisk
             $memory   = Get-WmiObject -ComputerName $computerName  win32_physicalmemory
+            $HD       = Get-WmiObject -ComputerName $computername Win32_diskdrive
             $WQLFilter="NOT SID = 'S-1-5-18' AND NOT SID = 'S-1-5-19' AND NOT SID = 'S-1-5-20'" 
             $Win32User = Get-WmiObject -Class Win32_UserProfile -Filter $WQLFilter -ComputerName $computername 
             $lastusetime = $Win32User | Sort-Object -Property LastUseTime -Descending | Select-Object -First 1 
@@ -90,6 +91,7 @@
                         LastReformat = $hostinfo.whenCreated 
                         CPU = $cpu.name | select -First 1
                         CPUcount = ($cpu | Measure-Object).Count
+                        HDmodel  = $hd.caption
                         CPUcores = (($cpu).numberofcores | Measure-Object -Sum).sum  
                         HDsize = (($disk.size | Measure-Object -Sum).Sum)| ConvertTo-KMG
                         HDfreeSpace =  (($disk.freespace | Measure-Object -Sum).Sum)| ConvertTo-KMG
