@@ -96,7 +96,7 @@
                         HDsize = (($disk.size | Measure-Object -Sum).Sum)| ConvertTo-KMG
                         HDfreeSpace =  (($disk.freespace | Measure-Object -Sum).Sum)| ConvertTo-KMG
                         RAMtotal =  (($memory.capacity | Measure-Object -sum).sum) | ConvertTo-KMG
-                        RAMlocation = $memory.devicelocator 
+                        RAMlocation = $memory.devicelocator.GetType() 
                         RAMspeed = if((($memory.speed | Measure-Object -Average).Average) -eq $null) `
                                     {"VHD"} else {($memory.speed | Measure-Object -Average).Average}
                         Manufactuer = $cpusys.Manufacturer

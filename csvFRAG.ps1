@@ -8,8 +8,8 @@ $SMTPServer = "smtp.gmail.com"   ###############################################
 $SMTPPort = "587"     ############################################################################################################################################################
 $credentials = new-object Management.Automation.PSCredential “haledonbraenstone@gmail.com”, (“yourpassword” | ConvertTo-SecureString -AsPlainText -Force) ############################
 ##################################################################################################################################################################################
-
-$chk = defrag C:\ClusterStorage\Volume1 /A 
+$csvloc = "c:\clusterstorage\Volume1"
+$chk = defrag $csvloc /A 
 [int]$fragmentation = ((($chk | Select-String 'Total fragmented space') -split '=') -replace '%','').trim()[1]
 
 if($fragmentation -gt 8)
